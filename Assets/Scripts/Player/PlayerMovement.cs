@@ -14,12 +14,17 @@ public class PlayerMovement : MonoBehaviour
 
     [Space]
 
-    [Header("Parameters")]
+    [Header("Player Input Parameters")]
     public float xySpeed = 18;
     public float lookSpeed = 340;
     public float forwardSpeed = 6;
 
     [Space]
+    [Range(0.0f, 1.0f), Tooltip("The amount of time the player has to input the double tap sequence for Barrel Roll")]
+    public float barrelRollInputWindow = 0.3f;
+    private float barrelRollInputWindowTimeElapsed = 0.0f;
+    private int lTapCount = 0;
+    private int rTapCount = 0;
 
     [Header("Public References")]
     public Transform aimTarget;
@@ -61,13 +66,43 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonUp("Fire3"))
             Break(false);
 
-        if (Input.GetButtonDown("TriggerL") || Input.GetButtonDown("TriggerR"))
+        // Barrel Roll Update
         {
-            int dir = Input.GetButtonDown("TriggerL") ? -1 : 1;
-            QuickSpin(dir);
+            if (lTapCount > 0 || rTapCount > 0)
+            {
+                barrelRollInputWindowTimeElapsed += Time.deltaTime;
+            }
+
+            if (Input.GetButtonDown("TriggerL") || Input.GetButtonDown("TriggerR"))
+            {
+                int dir = Input.GetButtonDown("TriggerL") ? -1 : 1;
+
+                if (dir == -1)
+                {
+                    ++lTapCount;
+                }
+                else
+                {
+                    ++rTapCount;
+                }
+
+                // INVALID INPUT - Barrel Roll direction input can't be mixed, so reset Barrel Roll state
+                if ((barrelRollInputWindowTimeElapsed > barrelRollInputWindow) || (lTapCount > 0 && rTapCount > 0))
+                {
+                    lTapCount = 0;
+                    rTapCount = 0;
+                    barrelRollInputWindowTimeElapsed = 0.0f;
+                }
+                else if (lTapCount >= 2 || rTapCount >= 2)
+                {
+                    QuickSpin(dir);
+                }
+            }
+            else if (Input.GetButton("TriggerL") || Input.GetButton("TriggerR"))
+            {
+                // TODO Lerp to half-rotation
+            }
         }
-
-
     }
 
     void LocalMove(float x, float y, float speed)
@@ -111,6 +146,10 @@ public class PlayerMovement : MonoBehaviour
         {
             playerModel.DOLocalRotate(new Vector3(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, 360 * -dir), .4f, RotateMode.LocalAxisAdd).SetEase(Ease.OutSine);
             barrel.Play();
+
+            barrelRollInputWindowTimeElapsed = 0.0f;
+            lTapCount = 0;
+            rTapCount = 0;
         }
     }
 
