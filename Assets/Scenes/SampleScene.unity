@@ -34874,6 +34874,7 @@ MonoBehaviour:
   lookSpeed: 10000
   forwardSpeed: 12
   barrelRollInputWindow: 0.35
+  halfSpinSpeed: 0.6
   aimTarget: {fileID: 211228551}
   dolly: {fileID: 361593942}
   cameraParent: {fileID: 504094690}

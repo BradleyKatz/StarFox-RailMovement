@@ -173,9 +173,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!DOTween.IsTweening(playerModel))
         {
-            //float targetRotationAmount = Quaternion.Angle(Quaternion.Euler(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, playerModel.localEulerAngles.z * dir), Quaternion.Euler(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, 90.0f * dir)) * -dir;
             float targetRotationAmount = (90.0f * -dir) - playerModel.localEulerAngles.z;
-            Debug.Log(targetRotationAmount);
+            //float targetRotationAmount = (90.0f - (playerModel.localEulerAngles.z / 3.6f )) * -dir;
+            //Debug.Log("Angle: " + playerModel.localEulerAngles.z / 3.6f);
+            //Debug.Log(targetRotationAmount);
+
             currentHalfRotationTween = playerModel.DOLocalRotate(new Vector3(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, targetRotationAmount), halfSpinSpeed, RotateMode.LocalAxisAdd).SetEase(Ease.OutSine);
 
             while (currentHalfRotationTween.IsPlaying())
