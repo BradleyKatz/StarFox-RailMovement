@@ -26,6 +26,10 @@ public class PlayerMovement : MonoBehaviour
     private int lTapCount = 0;
     private int rTapCount = 0;
 
+    [Range(0.0f, 1.0f), Tooltip("The speed at which the player rotates into their half-spin")]
+    public float halfSpinSpeed = 0.6f;
+    private bool isInHalfSpin = false;
+
     [Header("Public References")]
     public Transform aimTarget;
     public CinemachineDollyCart dolly;
@@ -39,6 +43,8 @@ public class PlayerMovement : MonoBehaviour
     public ParticleSystem barrel;
     public ParticleSystem stars;
 
+    private Tween currentHalfRotationTween = null;
+
     void Start()
     {
         playerModel = transform.GetChild(0);
@@ -51,8 +57,12 @@ public class PlayerMovement : MonoBehaviour
         float v = joystick ? Input.GetAxis("Vertical") : Input.GetAxis("Mouse Y");
 
         LocalMove(h, v, xySpeed);
-        RotationLook(h,v, lookSpeed);
-        HorizontalLean(playerModel, h, 80, .1f);
+
+        if (!isInHalfSpin)
+        {
+            RotationLook(h, v, lookSpeed);
+            HorizontalLean(playerModel, h, 80, .1f);
+        }
 
         if (Input.GetButtonDown("Action"))
             Boost(true);
@@ -98,9 +108,16 @@ public class PlayerMovement : MonoBehaviour
                     QuickSpin(dir);
                 }
             }
-            else if (Input.GetButton("TriggerL") || Input.GetButton("TriggerR"))
+            else if (!isInHalfSpin && (Input.GetButton("TriggerL") || Input.GetButton("TriggerR")))
             {
-                // TODO Lerp to half-rotation
+                int dir = Input.GetButton("TriggerL") ? -1 : 1;
+                isInHalfSpin = true;
+
+                StartCoroutine(HalfSpin(dir));
+            }
+            else if (isInHalfSpin && (Input.GetButtonUp("TriggerL") || Input.GetButtonUp("TriggerR")))
+            {
+                isInHalfSpin = false;
             }
         }
     }
@@ -142,14 +159,38 @@ public class PlayerMovement : MonoBehaviour
 
     public void QuickSpin(int dir)
     {
+        playerModel.DOLocalRotate(new Vector3(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, 360 * -dir), .4f, RotateMode.LocalAxisAdd).SetEase(Ease.OutSine);
+        barrel.Play();
+
+        barrelRollInputWindowTimeElapsed = 0.0f; 
+        lTapCount = 0;
+        rTapCount = 0;
+        isInHalfSpin = false;
+    }
+
+    public IEnumerator HalfSpin(int dir)
+    {
         if (!DOTween.IsTweening(playerModel))
         {
-            playerModel.DOLocalRotate(new Vector3(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, 360 * -dir), .4f, RotateMode.LocalAxisAdd).SetEase(Ease.OutSine);
-            barrel.Play();
+            currentHalfRotationTween = playerModel.DOLocalRotate(new Vector3(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, 90.0f * -dir), halfSpinSpeed, RotateMode.LocalAxisAdd).SetEase(Ease.OutSine);
 
-            barrelRollInputWindowTimeElapsed = 0.0f;
-            lTapCount = 0;
-            rTapCount = 0;
+            while (currentHalfRotationTween.IsPlaying())
+            {
+                yield return new WaitForSeconds(halfSpinSpeed * 0.5f);
+
+                if (dir == -1 && !Input.GetButton("TriggerL"))
+                {
+                    currentHalfRotationTween.Kill();
+                    isInHalfSpin = false;
+                    break;
+                }
+                else if (dir == 1 && !Input.GetButton("TriggerR"))
+                {
+                    currentHalfRotationTween.Kill();
+                    isInHalfSpin = false;
+                    break;
+                }
+            }
         }
     }
 
