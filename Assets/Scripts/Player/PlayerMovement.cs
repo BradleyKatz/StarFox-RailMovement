@@ -157,6 +157,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    // TODO Attach laser deflection behaviour to the tween's OnUpdate
     public void QuickSpin(int dir)
     {
         playerModel.DOLocalRotate(new Vector3(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, 360 * -dir), .4f, RotateMode.LocalAxisAdd).SetEase(Ease.OutSine);
@@ -172,7 +173,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!DOTween.IsTweening(playerModel))
         {
-            currentHalfRotationTween = playerModel.DOLocalRotate(new Vector3(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, 90.0f * -dir), halfSpinSpeed, RotateMode.LocalAxisAdd).SetEase(Ease.OutSine);
+            //float targetRotationAmount = Quaternion.Angle(Quaternion.Euler(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, playerModel.localEulerAngles.z * dir), Quaternion.Euler(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, 90.0f * dir)) * -dir;
+            float targetRotationAmount = (90.0f * -dir) - playerModel.localEulerAngles.z;
+            Debug.Log(targetRotationAmount);
+            currentHalfRotationTween = playerModel.DOLocalRotate(new Vector3(playerModel.localEulerAngles.x, playerModel.localEulerAngles.y, targetRotationAmount), halfSpinSpeed, RotateMode.LocalAxisAdd).SetEase(Ease.OutSine);
 
             while (currentHalfRotationTween.IsPlaying())
             {
