@@ -5428,7 +5428,7 @@ GameObject:
   - component: {fileID: 361593941}
   - component: {fileID: 361593942}
   m_Layer: 0
-  m_Name: GameplayPlane
+  m_Name: Player Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18700,7 +18700,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &618659723
 Transform:
   m_ObjectHideFlags: 0
@@ -18738,11 +18738,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 618659722}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b859bf25621759b4495a0924e1c75120, type: 3}
+  m_Script: {fileID: 11500000, guid: ad86308a1efbc4a0a9b709895493ae01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 120
-  activated: 0
+  rotationSpeed: 120
 --- !u!43 &634176019
 Mesh:
   m_ObjectHideFlags: 0
@@ -20439,7 +20438,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1e-45, y: NaN, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 4.5832e-41, y: 9.57417e+12, z: 4.5832e-41, w: 8e-45}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -34834,8 +34833,10 @@ GameObject:
   - component: {fileID: 959202326}
   - component: {fileID: 959202327}
   - component: {fileID: 959202328}
+  - component: {fileID: 959202330}
+  - component: {fileID: 959202329}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player Ship
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34911,6 +34912,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &959202329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959202324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e5fa634655b49cf96d74c90d450062, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &959202330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959202324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f14f250ccdd544202b630d17e7d22351, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &967883866
 GameObject:
   m_ObjectHideFlags: 0
@@ -40163,7 +40188,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh123382
+  m_Name: pb_Mesh14590
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
