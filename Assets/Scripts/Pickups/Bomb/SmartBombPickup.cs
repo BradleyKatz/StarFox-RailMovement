@@ -18,6 +18,6 @@ public class SmartBombPickup : PickupBase
 
     protected override void OnPickupGrabbedEffect(PlayerManager player)
     {
-
+        player.IncrementBombs();
     }
 }
