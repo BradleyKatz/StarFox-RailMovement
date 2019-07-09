@@ -6,6 +6,6 @@ public class GoldRingPickup : RingPickupBase
 {
     protected override void OnPickupGrabbedEffect(PlayerManager player)
     {
-
+        player.IncrementGoldRings();
     }
 }

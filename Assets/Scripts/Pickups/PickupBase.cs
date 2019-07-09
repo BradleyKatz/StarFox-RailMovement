@@ -6,9 +6,24 @@ public abstract class PickupBase : MonoBehaviour
 {
     public float rotationSpeed = 120.0f;
     protected bool isGrabbed = false;
+    protected Collider triggerCollider;
 
     protected abstract void OnPickupGrabbedAnimation(PlayerManager player);
     protected abstract void OnPickupGrabbedEffect(PlayerManager player);
+
+    protected void Awake()
+    {
+        triggerCollider = GetComponent<Collider>();
+        if (triggerCollider == null)
+        {
+            Debug.LogWarning(gameObject.name + " does not have a collider, the pickup won't function without it");
+        }
+        else if (!triggerCollider.isTrigger)
+        {
+            Debug.LogWarning(gameObject.name + "'s collider is not a trigger, pickup objects are expected to have trigger colliders");
+            triggerCollider.isTrigger = true;
+        }
+    }
 
     protected void Update()
     {
@@ -24,6 +39,8 @@ public abstract class PickupBase : MonoBehaviour
         if (player)
         {
             isGrabbed = true;
+            triggerCollider.enabled = false;
+
             OnPickupGrabbedAnimation(player);
             OnPickupGrabbedEffect(player);
         }

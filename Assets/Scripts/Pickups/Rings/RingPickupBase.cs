@@ -7,7 +7,8 @@ public abstract class RingPickupBase : PickupBase
 {
     protected override void OnPickupGrabbedAnimation(PlayerManager player)
     {
-        transform.parent = player.transform.parent;
+        transform.parent = player.transform;
+        transform.localPosition = Vector3.zero;
 
         Sequence s = DOTween.Sequence();
         s.Append(transform.DORotate(Vector3.zero, .2f));

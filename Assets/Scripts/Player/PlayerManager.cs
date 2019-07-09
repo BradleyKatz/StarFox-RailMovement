@@ -17,6 +17,11 @@ public class PlayerManager : MonoBehaviour
 
     public void Heal(float healAmount)
     {
+        playerHealth.Heal(healAmount);
+    }
 
+    public void IncrementGoldRings()
+    {
+        playerHealth.IncrementGoldRings();
     }
 }
