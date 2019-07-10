@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
 {
+    public LayerMask shootableMask;
+
     protected enum ELaserType
     {
         Normal,
@@ -12,10 +14,28 @@ public class PlayerShoot : MonoBehaviour
     }
     protected ELaserType currentLaserType = ELaserType.Normal;
 
-    [Header("Laser Prefab References")]
-    [SerializeField] protected GameObject normalLaser = null;
-    [SerializeField] protected GameObject doubleLaser = null;
-    [SerializeField] protected GameObject doublePlasmaLaser = null;
+    [Header("Laser Properties")]
+    [Range(0.0f, 300.0f)]
+    public float laserRange = 150.0f;
+    [Range(0.0f, 30.0f)]
+    public float baseLaserDamage = 5.0f;
+    [Range(0.0f, 30.0f)]
+    public float plasmaLaserDamage = 10.0f;
+
+    [SerializeField] protected Transform singleRayOrigin = null;
+    [SerializeField] protected Transform doubleRayOriginLeft = null;
+    [SerializeField] protected Transform doubleRayOriginRight = null;
+
+    public Color normalLaserColor = Color.green;
+    public Color plasmaLaserColor = Color.blue;
+
+    [Range(0.0f, 1.0f), Tooltip("The amount of time it takes to fire a laser")]
+    public float rateOfFireDelay = 0.3f;
+    protected float rofDelayElapsed = 0.0f;
+
+    protected LineRenderer centerLaserLineRenderer = null;
+    protected LineRenderer leftLaserLineRenderer = null;
+    protected LineRenderer rightLaserLineRenderer = null;
 
     [Header("Bomb Prefab Reference")]
     [SerializeField] protected GameObject bombPrefab = null;
@@ -45,6 +65,21 @@ public class PlayerShoot : MonoBehaviour
     protected void Start()
     {
         numBombs = maxBombs;
+
+        if (singleRayOrigin)
+        {
+            centerLaserLineRenderer = singleRayOrigin.GetComponent<LineRenderer>();
+        }
+
+        if (doubleRayOriginLeft)
+        {
+            leftLaserLineRenderer = doubleRayOriginLeft.GetComponent<LineRenderer>();
+        }
+
+        if (doubleRayOriginRight)
+        {
+            rightLaserLineRenderer = doubleRayOriginRight.GetComponent<LineRenderer>();
+        }
     }
 
     protected void Update()
@@ -52,6 +87,18 @@ public class PlayerShoot : MonoBehaviour
         if (Input.GetButtonDown("Bomb") && numBombs > 0)
         {
             LaunchBomb();
+        }
+
+        rofDelayElapsed = Mathf.Max(rofDelayElapsed - Time.deltaTime, 0.0f);
+        if (Input.GetButtonDown("Shoot") && rofDelayElapsed <= 0.0f)
+        {
+            ShootLaser();
+        }
+        else if (rofDelayElapsed > 0.0f)
+        {
+            centerLaserLineRenderer.enabled = false;
+            leftLaserLineRenderer.enabled = false;
+            rightLaserLineRenderer.enabled = false;
         }
     }
 
@@ -62,6 +109,140 @@ public class PlayerShoot : MonoBehaviour
             --numBombs;
 
             // TODO Actually spawn bomb
+        }
+    }
+
+    protected void ShootLaser()
+    {
+        rofDelayElapsed = rateOfFireDelay;
+
+        switch (currentLaserType)
+        {
+            case ELaserType.Normal:
+                {
+                    centerLaserLineRenderer.enabled = true;
+                    centerLaserLineRenderer.startColor = normalLaserColor;
+                    centerLaserLineRenderer.endColor = normalLaserColor;
+                    centerLaserLineRenderer.SetPosition(0, singleRayOrigin.position);
+
+                    Ray shootRay = new Ray();
+                    shootRay.origin = singleRayOrigin.position;
+                    shootRay.direction = singleRayOrigin.forward;
+
+                    if (Physics.Raycast(shootRay, out RaycastHit hit, laserRange, shootableMask))
+                    {
+                        OnShootableObjectHit(hit.transform.gameObject, baseLaserDamage);
+                        centerLaserLineRenderer.SetPosition(1, hit.point);
+                    }
+                    else
+                    {
+                        centerLaserLineRenderer.SetPosition(1, shootRay.origin + shootRay.direction * laserRange);
+                    }
+                }
+                break;
+            case ELaserType.Double:
+                {
+                    // Left Laser
+                    {
+                        leftLaserLineRenderer.enabled = true;
+                        leftLaserLineRenderer.startColor = normalLaserColor;
+                        leftLaserLineRenderer.endColor = normalLaserColor;
+                        leftLaserLineRenderer.SetPosition(0, doubleRayOriginLeft.position);
+
+                        Ray shootRay = new Ray();
+                        shootRay.origin = doubleRayOriginLeft.position;
+                        shootRay.direction = doubleRayOriginLeft.forward;
+
+                        if (Physics.Raycast(shootRay, out RaycastHit hit, laserRange, shootableMask))
+                        {
+                            OnShootableObjectHit(hit.transform.gameObject, baseLaserDamage);
+                            leftLaserLineRenderer.SetPosition(1, hit.point);
+                        }
+                        else
+                        {
+                            leftLaserLineRenderer.SetPosition(1, shootRay.origin + shootRay.direction * laserRange);
+                        }
+                    }
+
+                    // Right Laser
+                    {
+                        rightLaserLineRenderer.enabled = true;
+                        rightLaserLineRenderer.startColor = normalLaserColor;
+                        rightLaserLineRenderer.endColor = normalLaserColor;
+                        rightLaserLineRenderer.SetPosition(0, doubleRayOriginRight.position);
+
+                        Ray shootRay = new Ray();
+                        shootRay.origin = doubleRayOriginRight.position;
+                        shootRay.direction = doubleRayOriginRight.forward;
+
+                        if (Physics.Raycast(shootRay, out RaycastHit hit, laserRange, shootableMask))
+                        {
+                            OnShootableObjectHit(hit.transform.gameObject, baseLaserDamage);
+                            rightLaserLineRenderer.SetPosition(1, hit.point);
+                        }
+                        else
+                        {
+                            rightLaserLineRenderer.SetPosition(1, shootRay.origin + shootRay.direction * laserRange);
+                        }
+                    }
+                }
+                break;
+            case ELaserType.DoublePlasma:
+                {
+                    // Left Laser
+                    {
+                        leftLaserLineRenderer.enabled = true;
+                        leftLaserLineRenderer.startColor = plasmaLaserColor;
+                        leftLaserLineRenderer.endColor = plasmaLaserColor;
+                        leftLaserLineRenderer.SetPosition(0, doubleRayOriginLeft.position);
+
+                        Ray shootRay = new Ray();
+                        shootRay.origin = doubleRayOriginLeft.position;
+                        shootRay.direction = doubleRayOriginLeft.forward;
+
+                        if (Physics.Raycast(shootRay, out RaycastHit hit, laserRange, shootableMask))
+                        {
+                            OnShootableObjectHit(hit.transform.gameObject, plasmaLaserDamage);
+                            leftLaserLineRenderer.SetPosition(1, hit.point);
+                        }
+                        else
+                        {
+                            leftLaserLineRenderer.SetPosition(1, shootRay.origin + shootRay.direction * laserRange);
+                        }
+                    }
+
+                    // Right Laser
+                    {
+                        rightLaserLineRenderer.enabled = true;
+                        rightLaserLineRenderer.startColor = plasmaLaserColor;
+                        rightLaserLineRenderer.endColor = plasmaLaserColor;
+                        rightLaserLineRenderer.SetPosition(0, doubleRayOriginRight.position);
+
+                        Ray shootRay = new Ray();
+                        shootRay.origin = doubleRayOriginRight.position;
+                        shootRay.direction = doubleRayOriginRight.forward;
+
+                        if (Physics.Raycast(shootRay, out RaycastHit hit, laserRange, shootableMask))
+                        {
+                            OnShootableObjectHit(hit.transform.gameObject, plasmaLaserDamage);
+                            rightLaserLineRenderer.SetPosition(1, hit.point);
+                        }
+                        else
+                        {
+                            rightLaserLineRenderer.SetPosition(1, shootRay.origin + shootRay.direction * laserRange);
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    protected void OnShootableObjectHit(GameObject go, float damageAmount)
+    {
+        Damageable damageable = go.GetComponent<Damageable>();
+        if (damageable)
+        {
+            damageable.OnDamageTaken(damageAmount);
         }
     }
 }
