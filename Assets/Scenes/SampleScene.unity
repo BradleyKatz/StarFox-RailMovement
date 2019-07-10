@@ -16171,30 +16171,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &959202324 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2423288214478592271, guid: 9da2a55f6ead44314b196a77877a387e,
-    type: 3}
-  m_PrefabInstance: {fileID: 2423288213554552091}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &959202331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 959202324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b2b20052b7c74841820ddb8239bd7df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normalLaser: {fileID: 0}
-  doubleLaser: {fileID: 0}
-  doublePlasmaLaser: {fileID: 0}
-  bombPrefab: {fileID: 0}
-  numBombs: 0
-  maxBombs: 3
 --- !u!1 &967883866
 GameObject:
   m_ObjectHideFlags: 0
@@ -32215,6 +32191,38 @@ PrefabInstance:
       propertyPath: m_Path
       value: 
       objectReference: {fileID: 1389147488}
+    - target: {fileID: 959202331, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: rateOfFireDelay
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: m_MotionVectors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0.50574493
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].value
+      value: 0.9999994
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
 --- !u!1001 &2811784323146199991
