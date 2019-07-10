@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727454220}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.55, y: -0, z: 1.96}
+  m_LocalPosition: {x: 0.93, y: -0, z: 2.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7267555273247947934}
@@ -160,7 +160,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002033242}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.55, y: -0, z: 1.96}
+  m_LocalPosition: {x: -0.93, y: -0, z: 1.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7267555273247947934}
@@ -20092,8 +20092,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootableMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   laserRange: 150
+  baseLaserDamage: 5
+  plasmaLaserDamage: 10
   singleRayOrigin: {fileID: 1526163610}
   doubleRayOriginLeft: {fileID: 1002033243}
   doubleRayOriginRight: {fileID: 727454221}
