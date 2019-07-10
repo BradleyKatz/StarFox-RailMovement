@@ -32191,37 +32191,17 @@ PrefabInstance:
       propertyPath: m_Path
       value: 
       objectReference: {fileID: 1389147488}
-    - target: {fileID: 959202331, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
-      propertyPath: rateOfFireDelay
-      value: 0.15
+    - target: {fileID: 727454221, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.93
       objectReference: {fileID: 0}
-    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.size
-      value: 2
+    - target: {fileID: 727454221, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.14
       objectReference: {fileID: 0}
-    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
-      propertyPath: m_MotionVectors
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.50574493
-      objectReference: {fileID: 0}
-    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1526163611, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].value
-      value: 0.9999994
+    - target: {fileID: 1002033243, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.93
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9da2a55f6ead44314b196a77877a387e, type: 3}
