@@ -17,6 +17,11 @@ public class PlayerShoot : MonoBehaviour
     [Header("Laser Properties")]
     [Range(0.0f, 300.0f)]
     public float laserRange = 150.0f;
+    [Range(0.0f, 30.0f)]
+    public float baseLaserDamage = 5.0f;
+    [Range(0.0f, 30.0f)]
+    public float plasmaLaserDamage = 10.0f;
+
     [SerializeField] protected Transform singleRayOrigin = null;
     [SerializeField] protected Transform doubleRayOriginLeft = null;
     [SerializeField] protected Transform doubleRayOriginRight = null;
@@ -126,6 +131,7 @@ public class PlayerShoot : MonoBehaviour
 
                     if (Physics.Raycast(shootRay, out RaycastHit hit, laserRange, shootableMask))
                     {
+                        OnShootableObjectHit(hit.transform.gameObject, baseLaserDamage);
                         centerLaserLineRenderer.SetPosition(1, hit.point);
                     }
                     else
@@ -149,6 +155,7 @@ public class PlayerShoot : MonoBehaviour
 
                         if (Physics.Raycast(shootRay, out RaycastHit hit, laserRange, shootableMask))
                         {
+                            OnShootableObjectHit(hit.transform.gameObject, baseLaserDamage);
                             leftLaserLineRenderer.SetPosition(1, hit.point);
                         }
                         else
@@ -170,6 +177,7 @@ public class PlayerShoot : MonoBehaviour
 
                         if (Physics.Raycast(shootRay, out RaycastHit hit, laserRange, shootableMask))
                         {
+                            OnShootableObjectHit(hit.transform.gameObject, baseLaserDamage);
                             rightLaserLineRenderer.SetPosition(1, hit.point);
                         }
                         else
@@ -194,6 +202,7 @@ public class PlayerShoot : MonoBehaviour
 
                         if (Physics.Raycast(shootRay, out RaycastHit hit, laserRange, shootableMask))
                         {
+                            OnShootableObjectHit(hit.transform.gameObject, plasmaLaserDamage);
                             leftLaserLineRenderer.SetPosition(1, hit.point);
                         }
                         else
@@ -215,6 +224,7 @@ public class PlayerShoot : MonoBehaviour
 
                         if (Physics.Raycast(shootRay, out RaycastHit hit, laserRange, shootableMask))
                         {
+                            OnShootableObjectHit(hit.transform.gameObject, plasmaLaserDamage);
                             rightLaserLineRenderer.SetPosition(1, hit.point);
                         }
                         else
@@ -224,6 +234,15 @@ public class PlayerShoot : MonoBehaviour
                     }
                 }
                 break;
+        }
+    }
+
+    protected void OnShootableObjectHit(GameObject go, float damageAmount)
+    {
+        Damageable damageable = go.GetComponent<Damageable>();
+        if (damageable)
+        {
+            damageable.OnDamageTaken(damageAmount);
         }
     }
 }
